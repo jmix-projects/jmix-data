@@ -1,8 +1,8 @@
 group = 'io.jmix.data'
-archivesBaseName = 'jmix-data-hibernate-starter'
+archivesBaseName = 'jmix-eclipselink-starter'
 
 dependencies {
-    api project(':data-hibernate')
+    api project(':eclipselink')
 
     api 'com.zaxxer:HikariCP'
     api 'org.liquibase:liquibase-core'

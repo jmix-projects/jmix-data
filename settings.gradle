@@ -1,8 +1,8 @@
 rootProject.name = 'jmix-data'
 
 include 'data'
-include 'data-eclipselink'
-include 'data-eclipselink-starter'
+include 'eclipselink'
+include 'eclipselink-starter'
 include 'data-hibernate'
 include 'data-hibernate-starter'
 
