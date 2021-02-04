@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.jmix.autoconfigure.data.hibernate;
+package io.jmix.autoconfigure.hibernate;
 
 import io.jmix.core.CoreConfiguration;
 import io.jmix.core.JmixModules;

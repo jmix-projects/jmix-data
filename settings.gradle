@@ -5,7 +5,7 @@ include 'data-autoconfigure'
 include 'eclipselink'
 include 'eclipselink-starter'
 include 'data-hibernate'
-include 'data-hibernate-starter'
+include 'hibernate-starter'
 
 rootProject.children.each { p1 ->
 	p1.buildFileName = "${p1.name}.gradle"

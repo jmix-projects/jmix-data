@@ -15,6 +15,6 @@
  */
 
 @Internal
-package io.jmix.autoconfigure.data.hibernate;
+package io.jmix.autoconfigure.hibernate;
 
 import io.jmix.core.annotation.Internal;
