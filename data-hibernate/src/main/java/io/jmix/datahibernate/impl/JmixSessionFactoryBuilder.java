@@ -29,6 +29,7 @@ import org.hibernate.engine.config.spi.ConfigurationService;
 import org.hibernate.engine.query.spi.HQLQueryPlan;
 import org.hibernate.engine.spi.FilterDefinition;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
+import org.hibernate.event.service.spi.EventListenerRegistry;
 import org.hibernate.internal.SessionFactoryImpl;
 import org.springframework.beans.factory.BeanFactory;
 

@@ -33,7 +33,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @JmixModule(dependsOn = {CoreConfiguration.class, DataConfiguration.class})
 @PropertySource(name = "io.jmix.data.hibernate", value = "classpath:/io/jmix/data/hibernate/module.properties")
 @EnableTransactionManagement
-@EnableLoadTimeWeaving
 public class HibernateDataConfiguration {
 
     @Bean("hibernate_HibernateJmixJpaDialect")

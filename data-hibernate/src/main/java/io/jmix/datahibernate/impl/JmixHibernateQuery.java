@@ -317,10 +317,16 @@ public class JmixHibernateQuery<E> extends AbstractProducedQuery<E> implements Q
             }
 
 
-            for (QueryParameter<?> paramName : getParameterMetadata().collectAllParameters()) {
-                if (!obsoleteParams.contains(paramName.getName())) {
-                    Object value = getQueryParameterBindings().getBindValue(paramName.getName());
-                    query.setParameter(paramName.getName(), value);
+            for (QueryParameter<?> param : getParameterMetadata().collectAllParameters()) {
+                if (param.getName() != null && !obsoleteParams.contains(param.getName())) {
+                    Object value = getQueryParameterBindings().getBindValue(param.getName());
+                    query.setParameter(param.getName(), value);
+                } else if (param.getPosition() != null) {
+                    QueryParameterBinding<Object> binding = getQueryParameterBindings().getBinding(param.getPosition());
+                    if (binding != null) {
+                        Object value = binding.getBindValue();
+                        query.setParameter(param.getPosition(), value);
+                    }
                 }
             }
 
