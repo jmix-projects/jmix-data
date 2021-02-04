@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.jmix.autoconfigure.eclipselink;
+package io.jmix.autoconfigure.data;
 
 import io.jmix.core.Stores;
 import io.jmix.data.impl.liquibase.LiquibaseChangeLogProcessor;
@@ -32,7 +32,7 @@ import javax.sql.DataSource;
 
 @Configuration
 @ConditionalOnClass({SpringLiquibase.class})
-@AutoConfigureAfter({ DataSourceAutoConfiguration.class, EclipselinkAutoConfiguration.class })
+@AutoConfigureAfter({DataSourceAutoConfiguration.class})
 public class JmixLiquibaseAutoConfiguration {
 
     @Bean("jmix_LiquibaseProperties")

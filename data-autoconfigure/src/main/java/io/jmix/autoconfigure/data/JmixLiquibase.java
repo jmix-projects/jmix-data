@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.jmix.autoconfigure.eclipselink;
+package io.jmix.autoconfigure.data;
 
 import io.jmix.data.impl.liquibase.LiquibaseChangeLogProcessor;
 import liquibase.integration.spring.SpringLiquibase;
