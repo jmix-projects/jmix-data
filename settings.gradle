@@ -1,7 +1,10 @@
 rootProject.name = 'jmix-data'
 
 include 'data'
-include 'data-starter'
+include 'data-eclipselink'
+include 'data-eclipselink-starter'
+include 'data-hibernate'
+include 'data-hibernate-starter'
 
 rootProject.children.each { p1 ->
 	p1.buildFileName = "${p1.name}.gradle"

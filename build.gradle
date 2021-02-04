@@ -23,6 +23,7 @@ buildscript {
     dependencies {
         classpath("io.jmix.build:jmix-build:${rootProject.findProperty('buildPluginVersion') ?: version}")
         classpath("io.jmix.gradle:jmix-gradle-plugin:${rootProject.findProperty('jmixPluginVersion') ?: version}")
+        classpath "org.hibernate:hibernate-gradle-plugin:5.4.23.Final"
     }
 }
 

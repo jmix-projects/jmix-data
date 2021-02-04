@@ -16,12 +16,6 @@
 
 package io.jmix.data.impl;
 
-import org.eclipse.persistence.descriptors.changetracking.ChangeTracker;
-import org.eclipse.persistence.internal.descriptors.changetracking.AttributeChangeListener;
-import org.eclipse.persistence.sessions.changesets.AggregateChangeRecord;
-import org.eclipse.persistence.sessions.changesets.ChangeRecord;
-import org.eclipse.persistence.sessions.changesets.ObjectChangeSet;
-
 import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -59,22 +53,6 @@ public class EntityAttributeChanges {
      */
     public void addEmbeddedChanges(String attributeName, EntityAttributeChanges changes) {
         embeddedChanges.put(attributeName, changes);
-    }
-
-    /**
-     * Accumulates changes for the entity. Stores changed attribute names and old values.
-     */
-    public void addChanges(Object entity) {
-        if (!(entity instanceof ChangeTracker))
-            return;
-
-        AttributeChangeListener changeListener =
-                (AttributeChangeListener) ((ChangeTracker) entity)._persistence_getPropertyChangeListener();
-
-        if (changeListener == null)
-            return;
-
-        addChanges(changeListener.getObjectChangeSet());
     }
 
     /**
@@ -153,25 +131,6 @@ public class EntityAttributeChanges {
             }
         }
         return null;
-    }
-
-    /**
-     * INTERNAL
-     */
-    public void addChanges(ObjectChangeSet changeSet) {
-        if (changeSet == null)
-            return;
-
-        for (ChangeRecord changeRecord : changeSet.getChanges()) {
-            addChange(changeRecord.getAttribute(), changeRecord.getOldValue());
-            if (changeRecord instanceof AggregateChangeRecord) {
-                embeddedChanges.computeIfAbsent(changeRecord.getAttribute(), s -> {
-                    EntityAttributeChanges embeddedChanges = new EntityAttributeChanges();
-                    embeddedChanges.addChanges(((AggregateChangeRecord) changeRecord).getChangedObject());
-                    return embeddedChanges;
-                });
-            }
-        }
     }
 
     @Override
