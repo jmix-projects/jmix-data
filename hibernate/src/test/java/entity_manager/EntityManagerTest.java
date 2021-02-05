@@ -21,6 +21,7 @@ import io.jmix.core.event.EntityChangedEvent;
 import io.jmix.data.DataConfiguration;
 import io.jmix.data.PersistenceHints;
 import io.jmix.hibernate.HibernateConfiguration;
+import org.junit.Ignore;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -53,6 +54,8 @@ import static org.junit.jupiter.api.Assertions.*;
         classes = {CoreConfiguration.class, DataConfiguration.class, HibernateConfiguration.class, HibernateTestConfiguration.class},
         initializers = {TestContextInititalizer.class}
 )
+//todo: hibernate merge
+@Disabled
 public class EntityManagerTest {
 
     @PersistenceContext
