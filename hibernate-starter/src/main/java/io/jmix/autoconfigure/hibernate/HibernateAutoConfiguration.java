@@ -21,7 +21,7 @@ import io.jmix.core.JmixModules;
 import io.jmix.core.Resources;
 import io.jmix.core.Stores;
 import io.jmix.data.DataConfiguration;
-import io.jmix.datahibernate.HibernateDataConfiguration;
+import io.jmix.hibernate.HibernateConfiguration;
 import io.jmix.data.impl.JmixEntityManagerFactoryBean;
 import io.jmix.data.impl.JmixTransactionManager;
 import io.jmix.data.persistence.DbmsSpecifics;
@@ -38,7 +38,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
 @Configuration
-@Import({CoreConfiguration.class, DataConfiguration.class, HibernateDataConfiguration.class})
+@Import({CoreConfiguration.class, DataConfiguration.class, HibernateConfiguration.class})
 public class HibernateAutoConfiguration {
 
     @Bean

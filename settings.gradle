@@ -4,7 +4,7 @@ include 'data'
 include 'data-autoconfigure'
 include 'eclipselink'
 include 'eclipselink-starter'
-include 'data-hibernate'
+include 'hibernate'
 include 'hibernate-starter'
 
 rootProject.children.each { p1 ->
