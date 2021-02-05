@@ -18,12 +18,12 @@ package test_support;
 
 import io.jmix.core.Metadata;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import test_support.entity.multidb.Db1Customer;
 import test_support.entity.sec.User;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 

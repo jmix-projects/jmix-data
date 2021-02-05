@@ -32,6 +32,7 @@ import org.hibernate.persister.entity.EntityPersister;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -53,6 +54,7 @@ public class HibernateFireEventsEventListener implements PreInsertEventListener,
     @Autowired
     protected HibernatePersistenceSupport persistenceSupport;
 
+    @Lazy
     @Autowired
     protected HibernatePersistenceTools persistenceTools;
 
@@ -68,10 +70,10 @@ public class HibernateFireEventsEventListener implements PreInsertEventListener,
     @Autowired
     protected EntityAuditInfoProvider entityAuditInfoProvider;
 
-    protected boolean isJustSoftDeleted(SessionImplementor session, Object entity) {
+    protected boolean isJustSoftDeleted(Object entity) {
         if (EntityValues.isSoftDeletionSupported(entity)) {
             return EntityValues.isSoftDeleted(entity)
-                    && persistenceTools.isDirty(session, entity, metadataTools.getDeletedDateProperty(entity));
+                    && persistenceTools.isDirty(entity, metadataTools.getDeletedDateProperty(entity));
         }
         return false;
     }
@@ -94,7 +96,7 @@ public class HibernateFireEventsEventListener implements PreInsertEventListener,
     public void onPostUpdate(PostUpdateEvent event) {
         String storeName = persistenceSupport.getStorageName(event.getSession());
         Object entity = event.getEntity();
-        if (isJustSoftDeleted(event.getSession(), entity)) {
+        if (isJustSoftDeleted(entity)) {
             entityListenerManager.fireListener(entity, EntityListenerType.AFTER_DELETE, storeName);
         } else {
             entityListenerManager.fireListener(entity, EntityListenerType.AFTER_UPDATE, storeName);
@@ -132,7 +134,7 @@ public class HibernateFireEventsEventListener implements PreInsertEventListener,
     @Override
     public boolean onPreUpdate(PreUpdateEvent event) {
         Object entity = event.getEntity();
-        if (!(isJustSoftDeleted(event.getSession(), entity)) && EntityValues.isAuditSupported(entity)) {
+        if (!(isJustSoftDeleted(entity)) && EntityValues.isAuditSupported(entity)) {
             entityAuditInfoProvider.setUpdateInfo(entity, timeSource.currentTimestamp(), auditInfoProvider.getCurrentUser(), false);
             updateStateFields(event.getSession(), entity, event.getState());
         }

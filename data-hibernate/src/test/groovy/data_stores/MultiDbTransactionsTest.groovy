@@ -6,10 +6,9 @@
 package data_stores
 
 import io.jmix.core.Metadata
+import io.jmix.core.Stores
 import io.jmix.data.StoreAwareLocator
-import io.jmix.datahibernate.impl.HibernateDataStore
 import org.apache.commons.lang3.RandomStringUtils
-import org.junit.Ignore
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.transaction.TransactionDefinition
 import org.springframework.transaction.support.TransactionTemplate
@@ -21,8 +20,7 @@ import test_support.entity.multidb.Db1Customer
 import test_support.entity.multidb.Db1Order
 import test_support.entity.sec.User
 
-// ToDo: Hibernate change - all Stores.MAIN changed to HibernateDataStore.PREFIX_NAME
-@Ignore
+
 class MultiDbTransactionsTest extends DataSpec {
 
     @Autowired
@@ -44,7 +42,7 @@ class MultiDbTransactionsTest extends DataSpec {
         user.name = 'user1'
 
         mainTransaction().executeWithoutResult {
-            locator.getEntityManager(HibernateDataStore.STORE_NAME).persist(this.user)
+            locator.getEntityManager(Stores.MAIN).persist(this.user)
         }
 
         listener.before = { managedEntities ->
@@ -56,8 +54,8 @@ class MultiDbTransactionsTest extends DataSpec {
     def cleanup() {
         entities.clear()
         listener.before = null
-        locator.getJdbcTemplate(HibernateDataStore.STORE_NAME).update('delete from CARS_COLOUR')
-        locator.getJdbcTemplate(HibernateDataStore.STORE_NAME).update('delete from SEC_USER')
+        locator.getJdbcTemplate(Stores.MAIN).update('delete from CARS_COLOUR')
+        locator.getJdbcTemplate(Stores.MAIN).update('delete from SEC_USER')
         locator.getJdbcTemplate('db1').update('delete from ORDER_')
         locator.getJdbcTemplate('db1').update('delete from CUSTOMER')
     }
@@ -68,7 +66,7 @@ class MultiDbTransactionsTest extends DataSpec {
         colour.name = "color-" + RandomStringUtils.randomAlphabetic(5)
         colour.description = "some color"
 
-        locator.getEntityManager(HibernateDataStore.STORE_NAME).persist(colour)
+        locator.getEntityManager(Stores.MAIN).persist(colour)
     }
 
     private void createCustomer() {
@@ -86,7 +84,7 @@ class MultiDbTransactionsTest extends DataSpec {
     }
 
     def mainTransaction() {
-        def template = new TransactionTemplate(locator.getTransactionManager(HibernateDataStore.STORE_NAME))
+        def template = new TransactionTemplate(locator.getTransactionManager(Stores.MAIN))
         template.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW)
         return template
     }
@@ -147,7 +145,7 @@ class MultiDbTransactionsTest extends DataSpec {
         def db1_entities
 
         mainTransaction().executeWithoutResult {
-            def em = locator.getEntityManager(HibernateDataStore.STORE_NAME)
+            def em = locator.getEntityManager(Stores.MAIN)
             createColour()
             db1Transaction().executeWithoutResult {
                 createCustomer()
@@ -243,7 +241,7 @@ class MultiDbTransactionsTest extends DataSpec {
     }
 
     def "nested joined tx for different db"() {
-        def mainTx = new TransactionTemplate(locator.getTransactionManager(HibernateDataStore.STORE_NAME))
+        def mainTx = new TransactionTemplate(locator.getTransactionManager(Stores.MAIN))
         mainTx.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED)
 
         when:

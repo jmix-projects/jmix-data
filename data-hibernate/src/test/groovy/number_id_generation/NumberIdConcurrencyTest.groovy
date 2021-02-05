@@ -24,11 +24,11 @@ import io.jmix.data.SequenceSupport
 import io.jmix.data.impl.NumberIdCache
 import io.jmix.data.impl.NumberIdWorker
 import io.jmix.data.persistence.DbmsSpecifics
-import io.jmix.datahibernate.impl.HibernateDataStore
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.jdbc.core.JdbcTemplate
+
+import org.springframework.beans.factory.annotation.Autowired
 import test_support.DataSpec
 import test_support.entity.number_id_generation.NumberIdSingleTableRoot
 
@@ -52,14 +52,14 @@ class NumberIdConcurrencyTest extends DataSpec {
     @Autowired
     private DataProperties dataProperties
     @Autowired
-    private DataSource hibernateDataSource
+    private DataSource dataSource
 
     private SequenceSupport sequenceSupport
 
     private Logger log = LoggerFactory.getLogger(NumberIdConcurrencyTest)
 
     void setup() {
-        sequenceSupport = dbmsSpecifics.getSequenceSupport(HibernateDataStore.STORE_NAME)
+        sequenceSupport = dbmsSpecifics.getSequenceSupport()
 
         cleanupSequences()
 
@@ -68,7 +68,7 @@ class NumberIdConcurrencyTest extends DataSpec {
     void cleanup() {
         cleanupSequences()
 
-        def template = new JdbcTemplate(hibernateDataSource)
+        def template = new JdbcTemplate(dataSource)
         template.update('delete from TEST_NUMBER_ID_SINGLE_TABLE_ROOT')
     }
 
@@ -78,7 +78,7 @@ class NumberIdConcurrencyTest extends DataSpec {
 
         if (sequenceExists()) {
             def sql = sequenceSupport.deleteSequenceSql(getSequenceName('test$NumberIdSingleTableRoot'))
-            def template = new JdbcTemplate(hibernateDataSource)
+            def template = new JdbcTemplate(dataSource)
             template.update(sql)
         }
     }
@@ -181,7 +181,7 @@ class NumberIdConcurrencyTest extends DataSpec {
 
     private boolean sequenceExists() {
         def sequenceExistsSql = sequenceSupport.sequenceExistsSql(getSequenceName('test$NumberIdSingleTableRoot'))
-        def template = new JdbcTemplate(hibernateDataSource)
+        def template = new JdbcTemplate(dataSource)
         def rows = template.queryForList(sequenceExistsSql)
         return !rows.isEmpty()
     }
@@ -189,19 +189,19 @@ class NumberIdConcurrencyTest extends DataSpec {
 
     private long getNextSequenceValue() {
         def sql = sequenceSupport.getNextValueSql(getSequenceName('test$NumberIdSingleTableRoot'))
-        def template = new JdbcTemplate(hibernateDataSource)
+        def template = new JdbcTemplate(dataSource)
         return template.queryForObject(sql, Long.class)
     }
 
     private long getCurrentSequenceValue() {
         def sql = "select NEXT_VALUE from INFORMATION_SCHEMA.SYSTEM_SEQUENCES where SEQUENCE_NAME = '" + getSequenceName('test$NumberIdSingleTableRoot').toUpperCase() + "'"
-        def template = new JdbcTemplate(hibernateDataSource)
+        def template = new JdbcTemplate(dataSource)
         def rows = template.queryForList(sql)
         return (rows[0]['NEXT_VALUE'] as long) - 1
     }
 
     private long countEntities() {
-        def template = new JdbcTemplate(hibernateDataSource)
+        def template = new JdbcTemplate(dataSource)
         return template.queryForObject("select count(*) from TEST_NUMBER_ID_SINGLE_TABLE_ROOT", Long.class)
     }
 }

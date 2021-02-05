@@ -39,7 +39,6 @@ public class AuditableSubclass extends CreatableSubclass {
     @LastModifiedDate
     private Date touchDate;
 
-
     public String getTouchedBy() {
         return touchedBy;
     }

@@ -18,13 +18,10 @@ package test_support.entity.entity_extension;
 
 import io.jmix.core.entity.annotation.ReplaceEntity;
 import io.jmix.core.metamodel.annotation.JmixEntity;
-import io.jmix.core.metamodel.annotation.Store;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 
 @JmixEntity
 @Entity(name = "exttest_ExtModel")

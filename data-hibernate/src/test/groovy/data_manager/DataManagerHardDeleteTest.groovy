@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2008-2019 Haulmont.
+ * Copyright 2020 Haulmont.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ import io.jmix.core.DataManager
 import io.jmix.core.Id
 import io.jmix.core.SaveContext
 import io.jmix.data.PersistenceHints
+import org.junit.jupiter.api.Disabled
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.transaction.support.TransactionTemplate
 import test_support.DataSpec
@@ -42,13 +43,13 @@ class DataManagerHardDeleteTest extends DataSpec {
     def "hard delete of soft-deleted entity"() {
 
         def customer = dm.create(Customer)
-        def customer1 = dm.save(customer)
+        def customer1  = dm.save(customer)
 
         boolean sdBefore = true, sdAfter = true
 
         when:
 
-        tx.executeWithoutResult { status ->
+        tx.executeWithoutResult {status ->
             sdBefore = PersistenceHints.isSoftDeletion(entityManager)
 
             dm.save(new SaveContext().removing(customer1).setSoftDeletion(false))

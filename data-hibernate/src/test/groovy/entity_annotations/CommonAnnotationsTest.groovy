@@ -72,7 +72,7 @@ class CommonAnnotationsTest extends DataSpec {
         MetaClass checkingClass = metadata.getClass(SoftDeleteAuditableEntity)
 
         def metadataSystem = metadataTools.getSystemProperties(checkingClass) as Set
-        def mustBeSystem = ["id", "creator", "birthDate", "touchedBy", "touchDate", "whoDeleted", "whenDeleted"] as Set
+        def mustBeSystem = ["id", "creator", "birthDate", "touchedBy", "touchDate", "version", "whoDeleted", "whenDeleted"] as Set
 
         expect:
         metadataTools.isSystem(checkingClass.getProperty("id"))
@@ -80,6 +80,7 @@ class CommonAnnotationsTest extends DataSpec {
         metadataTools.isSystem(checkingClass.getProperty("birthDate"))
         metadataTools.isSystem(checkingClass.getProperty("touchedBy"))
         metadataTools.isSystem(checkingClass.getProperty("touchDate"))
+        metadataTools.isSystem(checkingClass.getProperty("version"))
         metadataTools.isSystem(checkingClass.getProperty("whoDeleted"))
         metadataTools.isSystem(checkingClass.getProperty("whenDeleted"))
 
@@ -87,8 +88,6 @@ class CommonAnnotationsTest extends DataSpec {
         !metadataTools.isSystem(checkingClass.getProperty("reason"))
 
         metadataSystem == mustBeSystem
-
-        //todo taimanov add version check after /jmix-old#588
     }
 
 }

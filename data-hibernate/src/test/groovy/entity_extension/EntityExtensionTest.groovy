@@ -16,6 +16,7 @@
 
 package entity_extension
 
+
 import io.jmix.core.DataManager
 import io.jmix.core.ExtendedEntities
 import io.jmix.core.FetchPlan
@@ -207,8 +208,8 @@ class EntityExtensionTest extends DataSpec {
                 .one()
 
         then:
-        plant1.models.find { it.name == 'm1' }.launchYear == 2001
-        plant1.models.find { it.name == 'm2' }.launchYear == 2002
+        plant1.models.find { it.name == 'm1'}.launchYear == 2001
+        plant1.models.find { it.name == 'm2'}.launchYear == 2002
 
         when:
         def model = dataManager.load(Model)

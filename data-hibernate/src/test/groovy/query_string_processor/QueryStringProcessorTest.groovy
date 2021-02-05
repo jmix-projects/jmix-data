@@ -16,10 +16,11 @@
 
 package query_string_processor
 
-import io.jmix.core.QueryStringProcessor
-import org.springframework.beans.factory.annotation.Autowired
-import test_support.DataSpec
 import test_support.entity.TestAppEntity
+import io.jmix.core.QueryStringProcessor
+import test_support.DataSpec
+
+import org.springframework.beans.factory.annotation.Autowired
 
 class QueryStringProcessorTest extends DataSpec {
 

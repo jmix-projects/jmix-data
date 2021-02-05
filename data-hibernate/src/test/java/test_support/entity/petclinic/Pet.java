@@ -19,7 +19,6 @@ package test_support.entity.petclinic;
 import io.jmix.core.metamodel.annotation.InstanceName;
 import io.jmix.core.metamodel.annotation.JmixEntity;
 import io.jmix.core.metamodel.annotation.JmixProperty;
-import io.jmix.core.metamodel.annotation.Store;
 import test_support.entity.BaseEntity;
 
 import javax.persistence.*;

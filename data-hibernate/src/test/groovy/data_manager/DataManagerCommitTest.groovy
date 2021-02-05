@@ -51,11 +51,11 @@ class DataManagerCommitTest extends DataSpec {
 
 
     void setup() {
-        appEntity = dataManager.create(TestAppEntity.class)
+        appEntity = dataManager.create(TestAppEntity)
         appEntity.name = 'appEntity'
 
-        appEntityItem = dataManager.create(TestAppEntityItem.class)
-        appEntityItem.name = 'appEntityItem'
+        appEntityItem = dataManager.create(TestAppEntityItem)
+        appEntity.name = 'appEntityItem'
         appEntityItem.appEntity = appEntity
 
         dataManager.save(appEntity, appEntityItem)
@@ -72,7 +72,7 @@ class DataManagerCommitTest extends DataSpec {
     def "test view after commit"() {
         when:
 
-        def view = fetchPlans.builder(TestAppEntity.class)
+        def view = fetchPlans.builder(TestAppEntity)
                 .add("createTs")
                 .add("items.createTs")
                 .partial()
@@ -87,11 +87,11 @@ class DataManagerCommitTest extends DataSpec {
 
         when:
 
-        def entity = dataManager.create(TestSecondAppEntity.class)
+        def entity = dataManager.create(TestSecondAppEntity)
         entity.name = 'secondAppEntity'
         entity.appEntity = loadedAppEntity
 
-        def commitView = fetchPlans.builder(TestSecondAppEntity.class)
+        def commitView = fetchPlans.builder(TestSecondAppEntity)
                 .add("name")
                 .add("appEntity.createTs")
                 .add("appEntity.items.name")

@@ -1,7 +1,6 @@
 package test_support.entity.sales;
 
 import io.jmix.core.metamodel.annotation.JmixEntity;
-import io.jmix.core.metamodel.annotation.Store;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

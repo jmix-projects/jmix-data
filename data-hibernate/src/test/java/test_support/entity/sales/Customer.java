@@ -20,7 +20,6 @@ package test_support.entity.sales;
 import io.jmix.core.entity.annotation.Listeners;
 import io.jmix.core.metamodel.annotation.InstanceName;
 import io.jmix.core.metamodel.annotation.JmixEntity;
-import io.jmix.core.metamodel.annotation.Store;
 import io.jmix.core.metamodel.datatype.impl.EnumUtils;
 import test_support.entity.BaseEntity;
 

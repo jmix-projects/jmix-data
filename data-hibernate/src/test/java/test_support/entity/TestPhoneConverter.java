@@ -19,7 +19,7 @@ package test_support.entity;
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
-@Converter(autoApply = true)
+@Converter
 public class TestPhoneConverter implements AttributeConverter<TestPhone, String> {
 
     @Override

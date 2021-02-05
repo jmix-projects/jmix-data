@@ -16,6 +16,7 @@
 
 package data_manager
 
+
 import io.jmix.core.DataManager
 import io.jmix.core.EntityStates
 import io.jmix.core.querycondition.LogicalCondition

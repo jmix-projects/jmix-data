@@ -19,7 +19,6 @@ package test_support.entity;
 import io.jmix.core.metamodel.annotation.DependsOnProperties;
 import io.jmix.core.metamodel.annotation.JmixEntity;
 import io.jmix.core.metamodel.annotation.JmixProperty;
-import io.jmix.core.metamodel.annotation.Store;
 import test_support.entity.sec.User;
 
 import javax.persistence.*;

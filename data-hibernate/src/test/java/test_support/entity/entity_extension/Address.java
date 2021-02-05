@@ -16,7 +16,6 @@
 package test_support.entity.entity_extension;
 
 import io.jmix.core.metamodel.annotation.JmixEntity;
-import io.jmix.core.metamodel.annotation.Store;
 
 import javax.persistence.*;
 

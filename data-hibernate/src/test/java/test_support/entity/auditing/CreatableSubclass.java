@@ -40,6 +40,10 @@ public class CreatableSubclass extends NotAuditableSubclass {
     @CreatedDate
     private Date birthDate;
 
+    @Column(name = "VERSION")
+    @Version
+    private Integer version;
+
     public String getCreator() {
         return creator;
     }
@@ -54,5 +58,13 @@ public class CreatableSubclass extends NotAuditableSubclass {
 
     public void setBirthDate(Date birthDate) {
         this.birthDate = birthDate;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
     }
 }

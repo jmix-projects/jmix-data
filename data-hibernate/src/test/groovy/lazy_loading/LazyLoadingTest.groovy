@@ -20,18 +20,10 @@ import io.jmix.core.DataManager
 import io.jmix.core.FetchPlanRepository
 import io.jmix.core.LoadContext
 import io.jmix.core.Metadata
-import org.junit.Ignore
-import org.junit.jupiter.api.Disabled
 import org.springframework.beans.factory.annotation.Autowired
 import test_support.DataSpec
-import test_support.entity.lazyloading.ManyToManyFirstEntity
-import test_support.entity.lazyloading.ManyToManySecondEntity
-import test_support.entity.lazyloading.ManyToOneEntity
-import test_support.entity.lazyloading.OneToManyEntity
-import test_support.entity.lazyloading.OneToOneFieldEntity
-import test_support.entity.lazyloading.OneToOneNoFieldEntity
+import test_support.entity.lazyloading.*
 
-@Ignore
 class LazyLoadingTest extends DataSpec {
 
     @Autowired
@@ -41,7 +33,6 @@ class LazyLoadingTest extends DataSpec {
     @Autowired
     FetchPlanRepository fetchPlanRepository
 
-    // SessionImpl.java:58
     def "OneToOne with field test"() {
         setup:
 

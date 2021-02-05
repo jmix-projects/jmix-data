@@ -18,11 +18,11 @@ package jpa_converter
 
 import io.jmix.core.DataManager
 import io.jmix.core.Id
-import org.springframework.beans.factory.annotation.Autowired
 import test_support.DataSpec
 import test_support.entity.TestConverterEntity
 import test_support.entity.TestPhone
 
+import org.springframework.beans.factory.annotation.Autowired
 import javax.sql.DataSource
 
 class JpaConverterTest extends DataSpec {

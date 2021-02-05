@@ -18,8 +18,8 @@ package events
 import io.jmix.core.DataManager
 import io.jmix.core.Id
 import io.jmix.core.Metadata
+import io.jmix.core.Stores
 import io.jmix.data.StoreAwareLocator
-import io.jmix.datahibernate.impl.HibernateDataStore
 import org.springframework.beans.factory.annotation.Autowired
 import spock.lang.Ignore
 import test_support.DataSpec
@@ -49,7 +49,7 @@ class EntityLoadSaveEventTest extends DataSpec {
 
     void cleanup() {
         if (customer != null) {
-            storeAwareLocator.getJdbcTemplate(HibernateDataStore.STORE_NAME)
+            storeAwareLocator.getJdbcTemplate(Stores.MAIN)
                     .execute("DELETE FROM SALES_CUSTOMER")
         }
     }
@@ -100,7 +100,7 @@ class EntityLoadSaveEventTest extends DataSpec {
 
         when:
 
-        storeAwareLocator.getTransactionTemplate(HibernateDataStore.STORE_NAME)
+        storeAwareLocator.getTransactionTemplate(Stores.MAIN)
                 .executeWithoutResult({ s ->
                     entityManager.merge(customer)
                 })

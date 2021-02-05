@@ -53,11 +53,13 @@ class DataSpec extends Specification {
         jdbc.update('delete from TEST_APP_ENTITY_ITEM')
         jdbc.update('delete from TEST_SECOND_APP_ENTITY')
         jdbc.update('delete from TEST_APP_ENTITY')
-//        jdbc.update('delete from TEST_IDENTITY_ID_ENTITY')
-//        jdbc.update('delete from TEST_IDENTITY_UUID_ENTITY')
+        jdbc.update('delete from TEST_IDENTITY_ID_ENTITY')
+        jdbc.update('delete from TEST_IDENTITY_UUID_ENTITY')
         jdbc.update('delete from TEST_COMPOSITE_KEY_ENTITY')
-//        jdbc.update('delete from TEST_ENTITY_WITH_NON_PERSISTENT_REF')
+        jdbc.update('delete from TEST_ENTITY_WITH_NON_PERSISTENT_REF')
 
+        jdbc.update('delete from SALES_ORDER_LINE')
+        jdbc.update('delete from SALES_CUSTOMER')
         jdbc.update('delete from SALES_PRODUCT')
 
         jdbc.update('delete from TEST_GFOO')

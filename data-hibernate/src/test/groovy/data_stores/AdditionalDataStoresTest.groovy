@@ -37,8 +37,7 @@ class AdditionalDataStoresTest extends DataSpec {
     @Autowired
     JdbcTemplate jdbc
 
-    @Autowired
-    @Qualifier("db1JdbcTemplate")
+    @Autowired @Qualifier("db1JdbcTemplate")
     JdbcTemplate db1Jdbc
 
     def "meta-classes have correct store descriptors"() {
@@ -47,7 +46,6 @@ class AdditionalDataStoresTest extends DataSpec {
 
         then:
         dbCustMetaClass.getStore().name == 'db1'
-        // ToDo: Hibernate change - data store name
         dbCustMetaClass.getStore().descriptor.beanName == 'hibernate_HibernateDataStore'
         dbCustMetaClass.getStore().descriptor.persistent
 

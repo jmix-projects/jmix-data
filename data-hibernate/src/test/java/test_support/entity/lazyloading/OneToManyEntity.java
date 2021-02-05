@@ -17,7 +17,6 @@
 package test_support.entity.lazyloading;
 
 import io.jmix.core.metamodel.annotation.JmixEntity;
-import io.jmix.core.metamodel.annotation.Store;
 import test_support.entity.BaseEntity;
 
 import javax.persistence.Column;

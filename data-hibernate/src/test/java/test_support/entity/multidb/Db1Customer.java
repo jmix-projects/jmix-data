@@ -19,7 +19,8 @@ import java.util.List;
 public class Db1Customer {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO/*, generator = "ref$Db1Customer"*/)
+//    @SequenceGenerator(name = "ref$Db1Customer", sequenceName = "customer_sequence", allocationSize = 1)
     @Column(name = "ID")
     protected Long id;
 

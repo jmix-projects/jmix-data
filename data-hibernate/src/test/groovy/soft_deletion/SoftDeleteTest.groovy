@@ -16,11 +16,13 @@
 
 package soft_deletion
 
+
+import test_support.entity.TestAppEntity
 import io.jmix.core.DataManager
 import io.jmix.core.EntityStates
-import org.springframework.beans.factory.annotation.Autowired
 import test_support.DataSpec
-import test_support.entity.TestAppEntity
+
+import org.springframework.beans.factory.annotation.Autowired
 
 class SoftDeleteTest extends DataSpec {
 

@@ -19,7 +19,6 @@ package test_support.entity.soft_delete;
 
 import io.jmix.core.annotation.DeletedBy;
 import io.jmix.core.metamodel.annotation.JmixEntity;
-import io.jmix.core.metamodel.annotation.Store;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

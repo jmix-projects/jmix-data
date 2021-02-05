@@ -27,15 +27,17 @@ import io.jmix.core.metamodel.datatype.impl.EnumClass;
 import io.jmix.core.metamodel.model.MetaClass;
 import io.jmix.core.metamodel.model.MetaProperty;
 import io.jmix.data.PersistenceTools;
-import io.jmix.datahibernate.impl.HibernateChangesProvider;
 import org.hibernate.Hibernate;
 import org.hibernate.engine.spi.EntityEntry;
 import org.hibernate.engine.spi.SessionImplementor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Nullable;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.sql.DataSource;
 import java.util.Collections;
 import java.util.HashSet;
@@ -49,6 +51,9 @@ import static io.jmix.core.entity.EntityValues.getValue;
  */
 @Component("hibernate_persistenceTools")
 public class HibernatePersistenceTools implements PersistenceTools {
+
+    @PersistenceContext
+    protected EntityManager session;
 
     @Autowired
     protected DataSource dataSource;
@@ -65,33 +70,6 @@ public class HibernatePersistenceTools implements PersistenceTools {
     @Autowired
     protected HibernateChangesProvider changesProvider;
 
-    @Override
-    public Set<String> getDirtyFields(Object entity) {
-        return null;
-    }
-
-    @Override
-    public boolean isDirty(Object entity) {
-        return false;
-    }
-
-    @Override
-    public boolean isDirty(Object entity, String... attributes) {
-        return false;
-    }
-
-    @Nullable
-    @Override
-    public Object getOldValue(Object entity, String attribute) {
-        return null;
-    }
-
-    @Nullable
-    @Override
-    public EnumClass getOldEnumValue(Object entity, String attribute) {
-        return null;
-    }
-
     /**
      * Returns the set of dirty attributes (changed since the last load from the database).
      * <p> If the entity is new, returns all its attributes.
@@ -99,9 +77,9 @@ public class HibernatePersistenceTools implements PersistenceTools {
      *
      * @param entity entity instance
      * @return dirty attribute names
-     * @see #isDirty(SessionImplementor, Object, String...)
+     * @see #isDirty(Object, String...)
      */
-    public Set<String> getDirtyFields(SessionImplementor session, Object entity) {
+    public Set<String> getDirtyFields(Object entity) {
         Preconditions.checkNotNullArgument(entity, "entity is null");
         EntityPreconditions.checkEntityType(entity);
 
@@ -116,7 +94,7 @@ public class HibernatePersistenceTools implements PersistenceTools {
                     result.add(property.getName());
             }
         } else {
-            EntityEntry entry = session.getPersistenceContextInternal().getEntry(entity);
+            EntityEntry entry = getPersistenceContext().getEntry(entity);
             if (entry != null) {
                 result.addAll(changesProvider.dirtyFields(entity, entry));
             }
@@ -130,18 +108,18 @@ public class HibernatePersistenceTools implements PersistenceTools {
      * <br> If the entity is not persistent or not in the Managed state, returns false.
      *
      * @param entity entity instance
-     * @see #getDirtyFields(SessionImplementor, Object)
-     * @see #isDirty(SessionImplementor, Object, String...)
+     * @see #getDirtyFields(Object)
+     * @see #isDirty(Object, String...)
      */
-    public boolean isDirty(SessionImplementor session, Object entity) {
+    public boolean isDirty(Object entity) {
         Preconditions.checkNotNullArgument(entity, "entity is null");
         EntityPreconditions.checkEntityType(entity);
 
         if (entityStates.isNew(entity))
             return true;
 
-        EntityEntry entry = session.getPersistenceContextInternal().getEntry(entity);
-        if (entry!=null) {
+        EntityEntry entry = getPersistenceContext().getEntry(entity);
+        if (entry != null) {
             return changesProvider.hasChanges(entity, entry);
         }
         return false;
@@ -154,12 +132,12 @@ public class HibernatePersistenceTools implements PersistenceTools {
      *
      * @param entity     entity instance
      * @param attributes attributes to check
-     * @see #getDirtyFields(SessionImplementor, Object)
+     * @see #getDirtyFields(Object)
      */
-    public boolean isDirty(SessionImplementor session, Object entity, String... attributes) {
+    public boolean isDirty(Object entity, String... attributes) {
         EntityPreconditions.checkEntityType(entity);
 
-        Set<String> dirtyFields = getDirtyFields(session, entity);
+        Set<String> dirtyFields = getDirtyFields(entity);
         for (String attribute : attributes) {
             if (dirtyFields.contains(attribute))
                 return true;
@@ -170,18 +148,18 @@ public class HibernatePersistenceTools implements PersistenceTools {
     /**
      * Returns an old value of an attribute changed in the current transaction. The entity must be in the Managed state.
      * For enum attributes returns enum id. <br>
-     * You can check if the value has been changed using {@link #isDirty(SessionImplementor, Object, String...)} method.
+     * You can check if the value has been changed using {@link #isDirty(Object, String...)} method.
      *
      * @param entity    entity instance
      * @param attribute attribute name
      * @return an old value stored in the database. For a new entity returns null.
      * @throws IllegalArgumentException if the entity is not persistent or not in the Managed state
-     * @see #getOldEnumValue(SessionImplementor, Object, String)
-     * @see #isDirty(SessionImplementor, Object, String...)
-     * @see #getDirtyFields(SessionImplementor, Object)
+     * @see #getOldEnumValue(Object, String)
+     * @see #isDirty(Object, String...)
+     * @see #getDirtyFields(Object)
      */
     @Nullable
-    public Object getOldValue(SessionImplementor session, Object entity, String attribute) {
+    public Object getOldValue(Object entity, String attribute) {
         Preconditions.checkNotNullArgument(entity, "entity is null");
 
         if (!entityStates.isManaged(entity))
@@ -190,10 +168,10 @@ public class HibernatePersistenceTools implements PersistenceTools {
         if (entityStates.isNew(entity)) {
             return null;
 
-        } else if (!isDirty(session, entity, attribute)) {
+        } else if (!isDirty(entity, attribute)) {
             return getValue(entity, attribute);
         } else {
-            EntityEntry entry = session.getPersistenceContextInternal().getEntry(entity);
+            EntityEntry entry = getPersistenceContext().getEntry(entity);
             if (entry != null) {
                 return entry.getLoadedValue(attribute);
             }
@@ -201,10 +179,14 @@ public class HibernatePersistenceTools implements PersistenceTools {
         return null;
     }
 
+    private org.hibernate.engine.spi.PersistenceContext getPersistenceContext() {
+        return ((SessionImplementor) session.getDelegate()).getPersistenceContextInternal();
+    }
+
     /**
      * Returns an old value of an enum attribute changed in the current transaction. The entity must be in the Managed state.
      * <p>
-     * Unlike {@link #getOldValue(SessionImplementor, Object, String)}, returns enum value and not its id.
+     * Unlike {@link #getOldValue(Object, String)}, returns enum value and not its id.
      *
      * @param entity    entity instance
      * @param attribute attribute name
@@ -212,10 +194,10 @@ public class HibernatePersistenceTools implements PersistenceTools {
      * @throws IllegalArgumentException if the entity is not persistent or not in the Managed state
      */
     @Nullable
-    public EnumClass getOldEnumValue(SessionImplementor session, Object entity, String attribute) {
+    public EnumClass getOldEnumValue(Object entity, String attribute) {
         EntityPreconditions.checkEntityType(entity);
 
-        Object value = getOldValue(session, entity, attribute);
+        Object value = getOldValue(entity, attribute);
         if (value == null)
             return null;
 

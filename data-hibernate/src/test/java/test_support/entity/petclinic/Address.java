@@ -17,14 +17,12 @@
 package test_support.entity.petclinic;
 
 import io.jmix.core.metamodel.annotation.JmixEntity;
-import io.jmix.core.metamodel.annotation.Store;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 @Embeddable
 @JmixEntity(name = "app_Address")
-@Store(name = "hibernate")
 public class Address {
 
     private static final long serialVersionUID = 3973674066005826186L;

@@ -16,15 +16,22 @@
 
 package number_id_generation
 
+import test_support.entity.number_id_generation.NumberIdJoinedChild
+import test_support.entity.number_id_generation.NumberIdJoinedRoot
+import test_support.entity.number_id_generation.NumberIdSeqNameFirst
+import test_support.entity.number_id_generation.NumberIdSeqNameSecond
+import test_support.entity.number_id_generation.NumberIdSingleTableChild
+import test_support.entity.number_id_generation.NumberIdSingleTableGrandChild
+import test_support.entity.number_id_generation.NumberIdSingleTableRoot
 import io.jmix.core.Metadata
+import io.jmix.core.Stores
 import io.jmix.data.SequenceSupport
 import io.jmix.data.StoreAwareLocator
 import io.jmix.data.persistence.DbmsSpecifics
-import io.jmix.datahibernate.impl.HibernateDataStore
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.jdbc.core.JdbcTemplate
+
+import org.springframework.beans.factory.annotation.Autowired
 import test_support.DataSpec
-import test_support.entity.number_id_generation.*
 
 class NumberIdGenerationTest extends DataSpec {
     @Autowired
@@ -38,7 +45,7 @@ class NumberIdGenerationTest extends DataSpec {
 
 
     void setup() {
-        sequenceSupport = dbmsSpecifics.getSequenceSupport(HibernateDataStore.STORE_NAME)
+        sequenceSupport = dbmsSpecifics.getSequenceSupport()
     }
 
     def "joined inheritance strategy"() {
@@ -147,7 +154,7 @@ class NumberIdGenerationTest extends DataSpec {
 
     private boolean sequenceExistsByName(String sequenceName) {
         def sequenceExistsSql = sequenceSupport.sequenceExistsSql(sequenceName)
-        def template = new JdbcTemplate(storeAwareLocator.getDataSource(HibernateDataStore.STORE_NAME))
+        def template = new JdbcTemplate(storeAwareLocator.getDataSource(Stores.MAIN))
         def rows = template.queryForList(sequenceExistsSql)
         return !rows.isEmpty()
     }
@@ -158,7 +165,7 @@ class NumberIdGenerationTest extends DataSpec {
 
     private long getCurrentSequenceValue(String sequenceName) {
         def sql = "select NEXT_VALUE from INFORMATION_SCHEMA.SYSTEM_SEQUENCES where SEQUENCE_NAME = '" + sequenceName.toUpperCase() + "'"
-        def template = new JdbcTemplate(storeAwareLocator.getDataSource(HibernateDataStore.STORE_NAME))
+        def template = new JdbcTemplate(storeAwareLocator.getDataSource(Stores.MAIN))
         def rows = template.queryForList(sql)
         return (rows[0]['NEXT_VALUE'] as long) - 1
     }

@@ -19,7 +19,6 @@ package test_support.entity.number_id_generation;
 
 import io.jmix.core.entity.annotation.JmixGeneratedValue;
 import io.jmix.core.metamodel.annotation.JmixEntity;
-import io.jmix.core.metamodel.annotation.Store;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

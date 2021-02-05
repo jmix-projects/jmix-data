@@ -20,8 +20,6 @@ import io.jmix.core.annotation.DeletedBy;
 import io.jmix.core.annotation.DeletedDate;
 import io.jmix.core.entity.annotation.JmixGeneratedValue;
 import io.jmix.core.metamodel.annotation.JmixEntity;
-import io.jmix.datahibernate.impl.SoftDeletionFilterDefinition;
-import org.hibernate.annotations.Filter;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -36,8 +34,6 @@ import java.util.UUID;
 
 @MappedSuperclass
 @JmixEntity(name = "test_BaseEntity")
-@Filter(name = SoftDeletionFilterDefinition.NAME,
-        condition = "delete_ts is null")
 public class BaseEntity {
     @Id
     @Column(name = "ID")
