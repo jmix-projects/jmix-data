@@ -127,7 +127,7 @@ public class PropertyConditionGenerator implements ConditionGenerator {
 
         //noinspection ConstantConditions
         return property.lastIndexOf(".") > 0
-                ? property.substring(0, property.lastIndexOf(".")) + "." + referenceIdProperty
+                ? property.substring(0, property.lastIndexOf(".") + 1) + referenceIdProperty
                 : referenceIdProperty;
     }
 
