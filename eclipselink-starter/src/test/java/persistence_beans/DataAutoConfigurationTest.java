@@ -39,6 +39,7 @@ public class DataAutoConfigurationTest {
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
             .withConfiguration(AutoConfigurations.of(DataSourceAutoConfiguration.class, EclipselinkAutoConfiguration.class, CacheAutoConfiguration.class))
             .withPropertyValues("spring.datasource.url=jdbc:hsqldb:mem:testdb", "spring.datasource.username=sa")
+            .withAllowCircularReferences(true)
             .withAllowBeanDefinitionOverriding(true);
 
     @Test
